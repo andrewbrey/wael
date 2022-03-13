@@ -29,8 +29,21 @@ app.all(
   })
 );
 
-const port = process.env.PORT || 3000;
+const hostPort = process.env.HOST_PORT;
+const appPort = process.env.APP_PORT || 3000;
 
-app.listen(port, () => {
-  console.log(`Express server listening on port ${port}`);
+const server = app.listen(appPort, () => {
+  console.log(`Express server listening at http://localhost:${hostPort ?? appPort}`);
 });
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
+
+function shutdown() {
+  console.log('Shutting down server...');
+  server?.close((err) => {
+    if (err) console.log('Shutdown encountered error ', err);
+
+    process.exit(err ? 1 : 0);
+  });
+}
