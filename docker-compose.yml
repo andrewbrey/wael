@@ -7,6 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: wael:${DOCKER_IMAGE_TAG:-v1} # increment this number (or set the env value in your .env) to force portainer to rebuild the image https://github.com/portainer/portainer/issues/6288
+    restart: always
     ports:
       - "${HOST_PORT}:${APP_PORT}" # Must be supplied by shell or in .env file
     env_file:
