@@ -55,4 +55,4 @@ COPY --from=build /app/build /app/build
 COPY --from=build /app/public /app/public
 ADD . .
 
-CMD ["node_modules/.bin/cross-env", "NODE_ENV=production", "node", "./build/index.js"]
+CMD ["bash", "./start_with_migrations.sh"]
