@@ -12,4 +12,5 @@ services:
     env_file:
       - .env
     volumes:
-      - "${HOST_DATA_PATH:-./prisma/data/}:/app/prisma/data/" # Must be supplied by shell or in .env file
+      - "${HOST_DATA_PATH}:/workspace/prisma/data/" # Must be supplied by shell or in .env file
+    user: node
