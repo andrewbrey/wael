@@ -7,7 +7,7 @@ datasource db {
   url      = "file:./data/db.sqlite"
 }
 
-model Entry {
+model LogEntry {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
