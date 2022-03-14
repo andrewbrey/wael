@@ -4,6 +4,9 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  
+  // Hard code the local path to the db so it is in a
+  // consistent place for usage in docker bind-mounts
   url      = "file:./data/db.sqlite"
 }
 
