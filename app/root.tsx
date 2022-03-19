@@ -11,7 +11,11 @@ import {
 import tw from "~/styles/wael.css";
 
 export const links: LinksFunction = () => {
-  return [{ href: tw, rel: "stylesheet" }];
+  return [
+    { href: tw, rel: "stylesheet" },
+    // TODO add a real favicon
+    { href: "https://fav.farm/🐋", rel: "icon" },
+  ];
 };
 
 export const meta: MetaFunction = () => {
@@ -30,6 +34,26 @@ export default function App() {
       <body>
         <Outlet />
         <ScrollRestoration />
+        {process.env.NODE_ENV !== "production" ? (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            // supress react devtools message
+            
+            ;((ctx) => {
+              if(typeof ctx !== 'undefined' && typeof document !== 'undefined') {
+                ctx.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
+                  supportsFiber: true,
+                  inject: function() {},
+                  onCommitFiberRoot: function() {},
+                  onCommitFiberUnmount: function() {},
+                };
+              }
+            })(this);          
+          `,
+            }}
+          ></script>
+        ) : null}
         <Scripts />
         <LiveReload />
       </body>
