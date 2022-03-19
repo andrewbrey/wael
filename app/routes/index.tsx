@@ -1,6 +1,6 @@
-import { type LogEntry } from '@prisma/client';
-import { useLoaderData, type LoaderFunction } from 'remix';
-import { db } from '~/utils/db.server';
+import { type LogEntry } from "@prisma/client";
+import { useLoaderData, type LoaderFunction } from "remix";
+import { db } from "~/utils/db.server";
 
 type LoaderData = { logs: Array<LogEntry> };
 

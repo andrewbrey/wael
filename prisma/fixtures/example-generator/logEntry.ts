@@ -7,11 +7,11 @@
  * 2. The generator produces a json file of the same basename with the seed data in it
  */
 
-import { type LogEntry } from '@prisma/client';
-import { subDays } from 'date-fns';
-import { writeJson } from 'fs-extra';
-import { parse } from 'node:path';
-import { p } from '../../util';
+import { type LogEntry } from "@prisma/client";
+import { subDays } from "date-fns";
+import { writeJson } from "fs-extra";
+import { parse } from "node:path";
+import { p } from "../../util";
 
 const file = parse(__filename);
 
