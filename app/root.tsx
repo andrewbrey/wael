@@ -1,7 +1,7 @@
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, type MetaFunction } from 'remix';
 
 export const meta: MetaFunction = () => {
-  return { title: 'New Remix App' };
+  return { title: 'WAEL 🐋' };
 };
 
 export default function App() {
