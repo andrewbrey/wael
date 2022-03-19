@@ -4,14 +4,18 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  
+
   // Hard code the local path to the db so it is in a
   // consistent place for usage in docker bind-mounts
-  url      = "file:./data/db.sqlite"
+  url = "file:./data/db.sqlite"
 }
 
 model LogEntry {
   id        String   @id @default(uuid())
+  weight    Float
+  cardio    Boolean
+  lift      Boolean
+  notes     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

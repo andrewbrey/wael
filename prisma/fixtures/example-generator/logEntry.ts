@@ -7,6 +7,7 @@
  * 2. The generator produces a json file of the same basename with the seed data in it
  */
 
+import { faker } from "@faker-js/faker";
 import { type LogEntry } from "@prisma/client";
 import { subDays } from "date-fns";
 import { writeJson } from "fs-extra";
@@ -16,14 +17,21 @@ import { p } from "../../util";
 const file = parse(__filename);
 
 async function main() {
-  const entries: LogEntry[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
-    (d, _idx, { length }) =>
-      ({
-        id: `seed-logEntry-${d}`,
-        createdAt: subDays(new Date(), length - d),
-        updatedAt: subDays(new Date(), length - d),
-      } as LogEntry)
-  );
+  const entries: LogEntry[] = new Array(100)
+    .fill(null)
+    .map((_, idx) => idx + 1)
+    .map(
+      (d, idx, { length }) =>
+        ({
+          id: `seed-logEntry-${d}`,
+          weight: faker.datatype.float({ min: 158, max: 170, precision: 0.1 }),
+          cardio: true,
+          lift: idx % 2 === 0,
+          notes: faker.datatype.boolean() ? faker.lorem.lines() : null,
+          createdAt: subDays(new Date(), length - d),
+          updatedAt: subDays(new Date(), length - d),
+        } as LogEntry)
+    );
 
   await writeJson(p(`${file.name}.json`), entries, { spaces: 2 });
 }
