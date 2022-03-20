@@ -60,3 +60,5 @@ export default function App() {
     </html>
   );
 }
+
+// TODO add catch boundary and error boundary for 404 pages and errors
