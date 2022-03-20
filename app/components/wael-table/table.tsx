@@ -71,7 +71,7 @@ export const Table = ({ data }: TableProps) => {
                   "hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 lg:table-cell"
                 )}
               >
-                {log.cardio ? "✅" : "❌"}
+                {log.cardio ? "Yes" : "No"}
               </td>
               <td
                 className={clsx(
@@ -79,7 +79,7 @@ export const Table = ({ data }: TableProps) => {
                   "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
                 )}
               >
-                {log.lift ? "✅" : "❌"}
+                {log.lift ? "Yes" : "No"}
               </td>
               <td
                 className={clsx(

@@ -14,17 +14,20 @@ export const links: LinksFunction = () => {
   return [
     { href: tw, rel: "stylesheet" },
     // TODO add a real favicon
-    { href: "https://fav.farm/🐋", rel: "icon" },
+    { href: "https://fav.farm/🗠", rel: "icon" },
   ];
 };
 
 export const meta: MetaFunction = () => {
-  return { title: "wael" };
+  return { title: "WAEL" };
 };
 
 export default function App() {
   return (
-    <html lang="en" className="h-full bg-gray-100 font-serif font-light text-gray-900 antialiased">
+    <html
+      lang="en"
+      className="h-full bg-white font-mono font-light text-gray-900 antialiased selection:bg-gray-900 selection:text-white"
+    >
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
