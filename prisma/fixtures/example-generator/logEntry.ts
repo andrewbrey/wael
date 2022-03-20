@@ -10,8 +10,9 @@
 import { faker } from "@faker-js/faker";
 import { type LogEntry } from "@prisma/client";
 import { subDays } from "date-fns";
-import { writeJson } from "fs-extra";
+import { writeFile } from "fs-extra";
 import { parse } from "node:path";
+import superjson from "superjson";
 import { p } from "../../util";
 
 const file = parse(__filename);
@@ -33,7 +34,7 @@ async function main() {
         } as LogEntry)
     );
 
-  await writeJson(p(`${file.name}.json`), entries, { spaces: 2 });
+  await writeFile(p(`${file.name}.json`), superjson.stringify(entries));
 }
 
 main();

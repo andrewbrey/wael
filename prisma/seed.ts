@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { execa } from "execa";
-import { pathExists, readJson } from "fs-extra";
+import { pathExists, readFile } from "fs-extra";
+import superjson from "superjson";
 import { p } from "./util";
 
 const db = new PrismaClient();
@@ -16,7 +17,7 @@ async function seed() {
       await execa("yarn", ["esno", generatorPath]);
 
       if (await pathExists(entriesPath)) {
-        const entries = await readJson(entriesPath);
+        const entries = superjson.parse<any[]>(await readFile(entriesPath, { encoding: "utf-8" }));
 
         console.log(`Found ${entries.length} entries of type ${type}. Adding them to the db...`);
 

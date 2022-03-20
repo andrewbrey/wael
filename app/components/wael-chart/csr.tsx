@@ -42,6 +42,7 @@ export const CSRChart = ({ data }: ChartProps) => {
         ],
       },
       options: {
+        maintainAspectRatio: false,
         scales: {
           y: {
             beginAtZero: true,

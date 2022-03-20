@@ -24,14 +24,14 @@ export const meta: MetaFunction = () => {
 
 export default function App() {
   return (
-    <html lang="en" className="bg-stone-100 font-serif font-light text-stone-900 antialiased">
+    <html lang="en" className="h-full bg-gray-100 font-serif font-light text-gray-900 antialiased">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="h-full">
         <Outlet />
         <ScrollRestoration />
         {process.env.NODE_ENV !== "production" ? (
