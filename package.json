@@ -5,7 +5,7 @@
   "license": "MIT",
   "sideEffects": false,
   "scripts": {
-    "build": "cross-env NODE_ENV=production remix build",
+    "build": "cross-env NODE_ENV=production tailwindcss -m -i ./app/styles/tailwind.css -o ./app/styles/wael.css && remix build",
     "dev": "cross-env NODE_ENV=development remix build && run-p dev:*",
     "dev:node": "cross-env NODE_ENV=development nodemon ./build/index.js --watch ./build/index.js",
     "dev:css": "tailwindcss -w -i ./app/styles/tailwind.css -o ./app/styles/wael.css",
