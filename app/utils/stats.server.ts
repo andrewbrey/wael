@@ -1,5 +1,5 @@
 import { type LogEntry } from "@prisma/client";
-import { isSameDay, isToday, isYesterday, subDays } from "date-fns";
+import { isSameDay, isToday, isYesterday, startOfDay, subDays } from "date-fns";
 
 export function currentStreak(entries: Array<LogEntry>, latest?: LogEntry) {
   if (!latest) return 0;
@@ -20,4 +20,12 @@ export function currentStreak(entries: Array<LogEntry>, latest?: LogEntry) {
   }
 
   return count;
+}
+
+export function totalDays(entries: Array<LogEntry>) {
+  let seen = new Set<string>();
+
+  entries.forEach((e) => seen.add(startOfDay(e.createdAt).toISOString()));
+
+  return seen.size;
 }

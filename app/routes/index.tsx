@@ -6,23 +6,25 @@ import { CSRChart, SSRChart } from "~/components/wael-chart";
 import { Table } from "~/components/wael-table";
 import { db } from "~/utils/db.server";
 import { json, useLoaderData } from "~/utils/io";
-import { currentStreak } from "~/utils/streak.server";
+import { currentStreak, totalDays } from "~/utils/stats.server";
 
-type LoaderData = { entries: Array<LogEntry>; latest?: LogEntry; streak: number };
+type LoaderData = { entries: Array<LogEntry>; latest?: LogEntry; streak: number; totalDays: number };
 
 export const loader: LoaderFunction = async () => {
   const entries = await db.logEntry.findMany({ orderBy: { createdAt: "asc" } });
 
   const latest = entries.at(entries.length - 1);
   const streak = currentStreak(entries, latest);
+  const total = totalDays(entries);
 
-  return json<LoaderData>({ entries, latest, streak });
+  return json<LoaderData>({ entries, latest, streak, totalDays: total });
 };
 
 export default function IndexRoute() {
   const data = useLoaderData<LoaderData>();
 
   const fmtStreak = new Intl.NumberFormat().format(data.streak);
+  const fmtTotalDays = new Intl.NumberFormat().format(data.totalDays);
 
   return (
     <main className="relative flex h-full flex-col overflow-hidden">
@@ -38,7 +40,7 @@ export default function IndexRoute() {
         <ClientOnly fallback={<SSRChart />}>{() => <CSRChart data={data.entries} />}</ClientOnly>
       </section>
 
-      <aside className="mx-4 flex items-center justify-center pb-4 pt-2 text-xs lg:text-sm">
+      <aside className="mx-4 flex items-center justify-start pb-1 pt-4 text-xs lg:justify-center lg:pb-2 lg:pt-2 lg:text-sm">
         <dl className="flex flex-col lg:flex-row lg:space-x-6">
           <div className="flex space-x-2">
             <dt className="text-gray-600">Latest:</dt>
@@ -49,6 +51,10 @@ export default function IndexRoute() {
           <div className="flex space-x-2">
             <dt className="text-gray-600">Streak:</dt>
             <dd className="break-words font-bold capitalize text-gray-900">{fmtStreak}</dd>
+          </div>
+          <div className="flex space-x-2">
+            <dt className="text-gray-600">Total Days:</dt>
+            <dd className="break-words font-bold capitalize text-gray-900">{fmtTotalDays}</dd>
           </div>
         </dl>
       </aside>

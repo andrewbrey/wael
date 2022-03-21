@@ -9,38 +9,29 @@ interface TableProps {
 export const Table = ({ data }: TableProps) => {
   const newestFirst = [...data].reverse();
 
+  const commonHeaderStyles =
+    "sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-80 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter";
+
+  const commonCellStyles = "px-3 py-4 text-sm text-gray-500 border-gray-200";
+
   return (
     <table className="min-w-full border-separate" style={{ borderSpacing: 0 }}>
-      <thead className="bg-gray-50">
+      <thead className="bg-white">
         <tr>
-          <th
-            scope="col"
-            className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
-          >
-            Date
+          <th scope="col" className={clsx(commonHeaderStyles, "pl-1 pr-3")}>
+            <span className="lg:hidden">Log Entries</span>
+            <span className="hidden lg:inline">Date</span>
           </th>
-          <th
-            scope="col"
-            className="sticky top-0 z-10 hidden border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
-          >
+          <th scope="col" className={clsx(commonHeaderStyles, "hidden px-3 lg:table-cell")}>
             Weight
           </th>
-          <th
-            scope="col"
-            className="sticky top-0 z-10 hidden border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter lg:table-cell"
-          >
+          <th scope="col" className={clsx(commonHeaderStyles, "hidden px-3 lg:table-cell")}>
             Cardio
           </th>
-          <th
-            scope="col"
-            className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-          >
+          <th scope="col" className={clsx(commonHeaderStyles, "hidden px-3 lg:table-cell")}>
             Lift
           </th>
-          <th
-            scope="col"
-            className="sticky top-0 z-10 border-b border-gray-300 bg-gray-50 bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
-          >
+          <th scope="col" className={clsx(commonHeaderStyles, "hidden px-3 lg:table-cell")}>
             Notes
           </th>
         </tr>
@@ -53,40 +44,53 @@ export const Table = ({ data }: TableProps) => {
             <tr key={log.id}>
               <td
                 className={clsx(
-                  idx !== data.length - 1 ? "border-b border-gray-200" : "",
-                  "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8"
+                  idx !== data.length - 1 ? "border-b" : "",
+                  commonCellStyles,
+                  "whitespace-nowrap pl-1 text-sm font-medium"
                 )}
               >
-                {formatted}
+                <span className="text-gray-900">{formatted}</span>
               </td>
               <td
                 className={clsx(
-                  idx !== data.length - 1 ? "border-b border-gray-200" : "",
-                  "hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell"
+                  idx !== data.length - 1 ? "border-b" : "",
+                  commonCellStyles,
+                  "hidden whitespace-nowrap lg:table-cell"
                 )}
               >
                 {log.weight}
               </td>
               <td
                 className={clsx(
-                  idx !== data.length - 1 ? "border-b border-gray-200" : "",
-                  "hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 lg:table-cell"
+                  idx !== data.length - 1 ? "border-b" : "",
+                  commonCellStyles,
+                  "hidden whitespace-nowrap lg:table-cell"
                 )}
               >
-                {log.cardio ? "Yes" : "No"}
+                {log.cardio ? (
+                  <span className="lg:underline lg:decoration-dotted">Yes</span>
+                ) : (
+                  <span className="">No</span>
+                )}
               </td>
               <td
                 className={clsx(
-                  idx !== data.length - 1 ? "border-b border-gray-200" : "",
-                  "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+                  idx !== data.length - 1 ? "border-b" : "",
+                  commonCellStyles,
+                  "hidden whitespace-nowrap lg:table-cell"
                 )}
               >
-                {log.lift ? "Yes" : "No"}
+                {log.lift ? (
+                  <span className="lg:underline lg:decoration-dotted">Yes</span>
+                ) : (
+                  <span className="">No</span>
+                )}
               </td>
               <td
                 className={clsx(
-                  idx !== data.length - 1 ? "border-b border-gray-200" : "",
-                  "whitespace-pre-line px-3 py-4 text-sm text-gray-500"
+                  idx !== data.length - 1 ? "border-b" : "",
+                  commonCellStyles,
+                  "hidden whitespace-pre-line lg:table-cell"
                 )}
               >
                 {log.notes}
