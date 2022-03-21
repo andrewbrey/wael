@@ -7,6 +7,8 @@ interface TableProps {
 }
 
 export const Table = ({ data }: TableProps) => {
+  const newestFirst = [...data].reverse();
+
   return (
     <table className="min-w-full border-separate" style={{ borderSpacing: 0 }}>
       <thead className="bg-gray-50">
@@ -44,7 +46,7 @@ export const Table = ({ data }: TableProps) => {
         </tr>
       </thead>
       <tbody className="bg-white">
-        {data.map((log, idx) => {
+        {newestFirst.map((log, idx) => {
           const formatted = format(log.createdAt, "EEEE MMM do, yyyy");
 
           return (
