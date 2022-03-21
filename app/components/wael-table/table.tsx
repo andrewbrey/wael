@@ -49,7 +49,28 @@ export const Table = ({ data }: TableProps) => {
                   "whitespace-nowrap pl-1 text-sm font-medium"
                 )}
               >
-                <span className="text-gray-900">{formatted}</span>
+                <span className="inline-block text-gray-900 lg:inline">{formatted}</span>
+                <dl className="lg:hidden">
+                  <div className="flex space-x-2">
+                    <dt>Weight:</dt>
+                    <dd>{log.weight}</dd>
+                  </div>
+                  <div className="flex space-x-2">
+                    <dt>Cardio:</dt>
+                    <dd>{log.cardio ? <span className="underline decoration-dotted">Yes</span> : <span>No</span>}</dd>
+                  </div>
+                  <div className="flex space-x-2">
+                    <dt>Lift:</dt>
+                    <dd>{log.lift ? <span className="underline decoration-dotted">Yes</span> : <span>No</span>}</dd>
+                  </div>
+                  {log.notes ? (
+                    <div className="pt-2 pl-2">
+                      <p className="whitespace-pre-line rounded-tl-sm rounded-bl-sm border-l-8 border-gray-200 pl-2">
+                        {log.notes}
+                      </p>
+                    </div>
+                  ) : null}
+                </dl>
               </td>
               <td
                 className={clsx(
@@ -67,11 +88,7 @@ export const Table = ({ data }: TableProps) => {
                   "hidden whitespace-nowrap lg:table-cell"
                 )}
               >
-                {log.cardio ? (
-                  <span className="lg:underline lg:decoration-dotted">Yes</span>
-                ) : (
-                  <span className="">No</span>
-                )}
+                {log.cardio ? <span className="underline decoration-dotted">Yes</span> : <span>No</span>}
               </td>
               <td
                 className={clsx(
@@ -80,11 +97,7 @@ export const Table = ({ data }: TableProps) => {
                   "hidden whitespace-nowrap lg:table-cell"
                 )}
               >
-                {log.lift ? (
-                  <span className="lg:underline lg:decoration-dotted">Yes</span>
-                ) : (
-                  <span className="">No</span>
-                )}
+                {log.lift ? <span className="underline decoration-dotted">Yes</span> : <span>No</span>}
               </td>
               <td
                 className={clsx(
