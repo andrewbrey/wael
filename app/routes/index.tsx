@@ -26,12 +26,15 @@ export default function IndexRoute() {
           <span>EL</span>
         </h1>
       </header>
-      <div className="relative max-h-[50%] flex-grow overflow-hidden md:max-h-[65%]">
+
+      <div className="relative m-4 max-h-[50%] flex-grow overflow-hidden md:max-h-[65%]">
         <ClientOnly fallback={<SSRChart />}>{() => <CSRChart data={data.entries} />}</ClientOnly>
       </div>
-      <div className="my-4 mx-4 max-h-[50%] flex-shrink-0 flex-grow overflow-auto outline-none ring-black focus-visible:ring-4 focus-visible:ring-offset-4 md:max-h-[35%]">
+
+      <div className="m-4 max-h-[50%] flex-shrink-0 flex-grow overflow-auto outline-none ring-black focus-visible:ring-4 focus-visible:ring-offset-4 md:max-h-[35%]">
         <Table data={data.entries} />
       </div>
+
       <footer className="absolute right-4 bottom-4">
         <Link to="add" className="group">
           <span className="grid h-10 w-10 transform place-items-center bg-gray-900 text-white outline-none ring-black transition-transform hover:scale-110 group-focus-visible:ring-4 group-focus-visible:ring-offset-4 group-active:scale-110">
