@@ -13,13 +13,16 @@ import tw from "~/styles/wael.css";
 export const links: LinksFunction = () => {
   return [
     { href: tw, rel: "stylesheet" },
-    // TODO add a real favicon
-    { href: "https://fav.farm/🗠", rel: "icon" },
+    { href: "/apple-touch-icon.png", rel: "apple-touch-icon", sizes: "180x180" },
+    { href: "/favicon-32x32.png", rel: "icon", type: "image/png", sizes: "32x32" },
+    { href: "/favicon-16x16.png", rel: "icon", type: "image/png", sizes: "16x16" },
+    { href: "/safari-pinned-tab.svg", rel: "mask-icon", color: "#2f2f2f" },
+    { href: "/site.webmanifest", rel: "manifest" },
   ];
 };
 
 export const meta: MetaFunction = () => {
-  return { title: "WAEL" };
+  return { title: "WAEL", "theme-color": "#ffffff", "msapplication-TileColor": "#ffffff" };
 };
 
 export default function App() {
