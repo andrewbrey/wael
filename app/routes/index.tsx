@@ -34,28 +34,28 @@ export default function IndexRoute() {
         </h1>
       </header>
 
-      <aside className="absolute top-2 left-2 z-10 bg-white p-2 text-sm">
-        <dl className="space-y-3">
-          <div>
-            <dt className="text-gray-500">Last Log:</dt>
-            <dd className="capitalize text-gray-800">
+      <section className="relative mx-4 mt-4 max-h-[50%] flex-grow overflow-hidden md:max-h-[65%]">
+        <ClientOnly fallback={<SSRChart />}>{() => <CSRChart data={data.entries} />}</ClientOnly>
+      </section>
+
+      <aside className="mx-4 flex items-center justify-center pb-4 pt-2 text-xs lg:text-sm">
+        <dl className="flex flex-col lg:flex-row lg:space-x-6">
+          <div className="flex space-x-2">
+            <dt className="text-gray-600">Latest:</dt>
+            <dd className="font-bold capitalize text-gray-900">
               {data.latest ? formatRelative(data.latest.createdAt, new Date()) : "Never"}
             </dd>
           </div>
-          <div>
-            <dt className="text-gray-500">Exercise Streak:</dt>
-            <dd className="break-words capitalize text-gray-800">{fmtStreak}</dd>
+          <div className="flex space-x-2">
+            <dt className="text-gray-600">Streak:</dt>
+            <dd className="break-words font-bold capitalize text-gray-900">{fmtStreak}</dd>
           </div>
         </dl>
       </aside>
 
-      <div className="relative m-4 max-h-[50%] flex-grow overflow-hidden md:max-h-[65%]">
-        <ClientOnly fallback={<SSRChart />}>{() => <CSRChart data={data.entries} />}</ClientOnly>
-      </div>
-
-      <div className="m-4 max-h-[50%] flex-shrink-0 flex-grow overflow-auto outline-none ring-black focus-visible:ring-4 focus-visible:ring-offset-4 md:max-h-[35%]">
+      <section className="mx-4 max-h-[50%] flex-shrink-0 flex-grow overflow-auto outline-none ring-black focus-visible:ring-4 focus-visible:ring-offset-4 md:max-h-[35%]">
         <Table data={data.entries} />
-      </div>
+      </section>
 
       <footer className="absolute right-4 bottom-4">
         <Link to="add" className="group">
