@@ -78,24 +78,26 @@ export default function IndexRoute() {
             <dt className="text-gray-600">Total Days:</dt>
             <dd className="break-words font-bold capitalize text-gray-900">{fmtTotalDays}</dd>
           </div>
-          {data.weight.high ? (
-            <div className="flex space-x-2">
-              <dt className="text-gray-600">High:</dt>
-              <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightMax}</dd>
-            </div>
-          ) : null}
-          {data.weight.low ? (
-            <div className="flex space-x-2">
-              <dt className="text-gray-600">Low:</dt>
-              <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightMin}</dd>
-            </div>
-          ) : null}
-          {data.weight.avg ? (
-            <div className="flex space-x-2">
-              <dt className="text-gray-600">Avg:</dt>
-              <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightAvg}</dd>
-            </div>
-          ) : null}
+          <div className="flex space-x-4 lg:space-x-6">
+            {data.weight.high ? (
+              <div className="flex space-x-2">
+                <dt className="text-gray-600">High:</dt>
+                <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightMax}</dd>
+              </div>
+            ) : null}
+            {data.weight.low ? (
+              <div className="flex space-x-2">
+                <dt className="text-gray-600">Low:</dt>
+                <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightMin}</dd>
+              </div>
+            ) : null}
+            {data.weight.avg ? (
+              <div className="flex space-x-2">
+                <dt className="text-gray-600">Avg:</dt>
+                <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightAvg}</dd>
+              </div>
+            ) : null}
+          </div>
         </dl>
       </aside>
 
