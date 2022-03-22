@@ -21,8 +21,6 @@ export const action: ActionFunction = async ({ request }) => {
   const cardio = !!formData.get("cardio");
   const lift = !!formData.get("lift");
 
-  console.log({ weight, notes, cardio, lift });
-
   if (Number.isNaN(weight)) {
     return badRequest({ formError: `Form not submitted correctly.` });
   }
@@ -74,14 +72,12 @@ export default function AddLogRoute() {
                     lbs
                   </span>
                   <input
-                    pattern="[0-9]*"
                     type="text"
                     name="weight"
                     id="weight"
                     required
                     autoComplete="off"
                     autoFocus
-                    inputMode="numeric"
                     defaultValue={actionData?.fields?.weight}
                     aria-invalid={Boolean(actionData?.fieldErrors?.weight)}
                     aria-errormessage={actionData?.fieldErrors?.weight ? "weight-error" : undefined}
