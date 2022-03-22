@@ -1,5 +1,6 @@
 {
   "name": "wael",
+  "version": "1.0.0",
   "private": false,
   "description": "A simple self-hosted weight and exercise log",
   "license": "MIT",
