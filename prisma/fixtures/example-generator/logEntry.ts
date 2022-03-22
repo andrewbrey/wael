@@ -18,21 +18,26 @@ import { p } from "../../util";
 const file = parse(__filename);
 
 async function main() {
+  const maxWeight = 180;
+  const minWeight = 150;
+
   const entries: LogEntry[] = new Array(100)
     .fill(null)
     .map((_, idx) => idx + 1)
-    .map(
-      (d, idx, { length }) =>
-        ({
-          id: `seed-logEntry-${d}`,
-          weight: faker.datatype.float({ min: 158, max: 170, precision: 0.1 }),
-          cardio: true,
-          lift: idx % 2 === 0,
-          notes: faker.datatype.boolean() ? faker.lorem.lines() : null,
-          createdAt: subDays(new Date(), length - d),
-          updatedAt: subDays(new Date(), length - d),
-        } as LogEntry)
-    );
+    .map((d, _idx, { length }) => {
+      const max = Math.max(minWeight, maxWeight - 0.14 * d);
+      const min = max - 3;
+
+      return {
+        id: `seed-logEntry-${d}`,
+        weight: faker.datatype.float({ min, max, precision: 0.1 }),
+        cardio: Math.random() <= 0.95,
+        lift: Math.random() <= 0.5,
+        notes: faker.datatype.boolean() ? faker.lorem.lines() : null,
+        createdAt: subDays(new Date(), length - d),
+        updatedAt: subDays(new Date(), length - d),
+      } as LogEntry;
+    });
 
   await writeFile(p(`${file.name}.json`), superjson.stringify(entries));
 }
