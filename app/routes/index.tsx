@@ -8,23 +8,45 @@ import { db } from "~/utils/db.server";
 import { json, useLoaderData } from "~/utils/io";
 import { currentStreak, totalDays } from "~/utils/stats.server";
 
-type LoaderData = { entries: Array<LogEntry>; latest?: LogEntry; streak: number; totalDays: number };
+type LoaderData = {
+  entries: Array<LogEntry>;
+  latest?: LogEntry;
+  streak: number;
+  totalDays: number;
+  weight: { high: number | null; low: number | null; avg: number | null };
+};
 
 export const loader: LoaderFunction = async () => {
   const entries = await db.logEntry.findMany({ orderBy: { createdAt: "asc" } });
+  const extrema = await db.logEntry.aggregate({
+    _max: { weight: true },
+    _min: { weight: true },
+    _avg: { weight: true },
+  });
 
   const latest = entries.at(entries.length - 1);
   const streak = currentStreak(entries, latest);
   const total = totalDays(entries);
 
-  return json<LoaderData>({ entries, latest, streak, totalDays: total });
+  return json<LoaderData>({
+    entries,
+    latest,
+    streak,
+    totalDays: total,
+    weight: { high: extrema._max.weight, low: extrema._min.weight, avg: extrema._avg.weight },
+  });
 };
 
 export default function IndexRoute() {
   const data = useLoaderData<LoaderData>();
 
-  const fmtStreak = new Intl.NumberFormat().format(data.streak);
-  const fmtTotalDays = new Intl.NumberFormat().format(data.totalDays);
+  const fmt = new Intl.NumberFormat();
+
+  const fmtStreak = fmt.format(data.streak);
+  const fmtTotalDays = fmt.format(data.totalDays);
+  const fmtWeightMax = fmt.format(data.weight.high ?? 0);
+  const fmtWeightMin = fmt.format(data.weight.low ?? 0);
+  const fmtWeightAvg = fmt.format(data.weight.avg ?? 0);
 
   return (
     <main className="relative flex h-full flex-col overflow-hidden">
@@ -56,6 +78,24 @@ export default function IndexRoute() {
             <dt className="text-gray-600">Total Days:</dt>
             <dd className="break-words font-bold capitalize text-gray-900">{fmtTotalDays}</dd>
           </div>
+          {data.weight.high ? (
+            <div className="flex space-x-2">
+              <dt className="text-gray-600">High:</dt>
+              <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightMax}</dd>
+            </div>
+          ) : null}
+          {data.weight.low ? (
+            <div className="flex space-x-2">
+              <dt className="text-gray-600">Low:</dt>
+              <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightMin}</dd>
+            </div>
+          ) : null}
+          {data.weight.avg ? (
+            <div className="flex space-x-2">
+              <dt className="text-gray-600">Avg:</dt>
+              <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightAvg}</dd>
+            </div>
+          ) : null}
         </dl>
       </aside>
 
