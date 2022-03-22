@@ -16,7 +16,7 @@ const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
 
-  const weight = parseInt(`${formData.get("weight")}`, 10);
+  const weight = parseFloat(`${formData.get("weight")}`);
   const notes = `${formData.get("notes")}`.trim();
   const cardio = !!formData.get("cardio");
   const lift = !!formData.get("lift");
@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
     return badRequest({ fieldErrors, fields });
   }
 
-  await db.logEntry.create({ data: { weight, cardio, lift, notes } });
+  await db.logEntry.create({ data: { weight: parseFloat(weight.toFixed(1)), cardio, lift, notes } });
 
   return redirect("/");
 };
