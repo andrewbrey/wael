@@ -7,7 +7,7 @@
 
 `WAEL` is a _simple_ self-hosted weight and exercise log - track your weight and exercise over time with basic metrics and a handy little chart. It can be self-hosted with the provide `Dockerfile` and/or `docker-compose.yml`.
 
-> **NOTE** - the `Docker` setup for this project has been specifically tailored to work on a `Raspberry PI`, and as such expects to run on `amd64` / `aarch64` processor architecture. If you want to run on your own `rpi`, make sure you are running a 64 bit version of your operating system because `prisma` (the ORM used in this project) requires it.
+> **NOTE** - the `Docker` setup for this project has been specifically tailored to work on a `Raspberry PI`, and as such expects to run on `arm64` / `aarch64` processor architecture. If you want to run on your own `rpi`, make sure you are running a 64 bit version of your operating system because `prisma` (the ORM used in this project) requires it.
 
 **Screenshots**
 
