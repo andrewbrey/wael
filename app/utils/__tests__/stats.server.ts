@@ -1,9 +1,8 @@
 import { type LogEntry } from "@prisma/client";
 import { readFile } from "fs-extra";
+import { join } from "node:path";
 import superjson from "superjson";
 import { expect, test, vi } from "vitest";
-import { join } from "node:path";
-
 import { currentStreak, totalDays } from "~/utils/stats.server";
 
 interface Fixture {

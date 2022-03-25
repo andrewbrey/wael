@@ -8,9 +8,9 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
-  type ThrownResponse,
   type LinksFunction,
   type MetaFunction,
+  type ThrownResponse,
 } from "remix";
 import tw from "~/styles/wael.css";
 

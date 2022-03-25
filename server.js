@@ -23,11 +23,11 @@ app.use("/build", express.static("public/build", { immutable: true, maxAge: "1y"
 app.use(express.static("public/", { maxAge: "1h" }));
 
 if (process.env.EXPOSE_PRISMA_STUDIO === "true") {
-  const port = process.env.PRISMA_STUDIO_PORT || 5555
+  const port = process.env.PRISMA_STUDIO_PORT || 5555;
   const proxy = require("express-http-proxy");
   const cheerio = require("cheerio");
 
-  studioProcess = spawn("npx", ["prisma", "studio", "--browser", "none", '--port', port], { stdio: "inherit" });
+  studioProcess = spawn("npx", ["prisma", "studio", "--browser", "none", "--port", port], { stdio: "inherit" });
 
   app.all(
     "*",

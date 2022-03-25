@@ -1,4 +1,4 @@
-import { json as remix_json, useLoaderData as remix_useLoaderData, useActionData as remix_useActionData } from "remix";
+import { json as remix_json, useActionData as remix_useActionData, useLoaderData as remix_useLoaderData } from "remix";
 import superjson from "superjson";
 
 export function json<Data>(data: Data, init?: number | ResponseInit): Response {

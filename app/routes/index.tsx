@@ -40,7 +40,7 @@ export const loader: LoaderFunction = async () => {
 export default function IndexRoute() {
   const data = useLoaderData<LoaderData>();
 
-  const fmt = new Intl.NumberFormat();
+  const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 0 });
 
   const fmtStreak = fmt.format(data.streak);
   const fmtTotalDays = fmt.format(data.totalDays);
