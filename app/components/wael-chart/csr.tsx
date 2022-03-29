@@ -1,10 +1,9 @@
-import { type LogEntry } from "@prisma/client";
 import Chart from "chart.js/auto";
-import { format } from "date-fns";
 import { useEffect, useRef } from "react";
+import { type LogEntryWithFmt } from "~/types";
 
 interface ChartProps {
-  data: LogEntry[];
+  data: Array<LogEntryWithFmt>;
 }
 
 export const CSRChart = ({ data }: ChartProps) => {
@@ -18,7 +17,7 @@ export const CSRChart = ({ data }: ChartProps) => {
     new Chart(canvasRef.current, {
       type: "line",
       data: {
-        labels: displayData.map((entry) => format(entry.createdAt, "EEEE MMM do, yyyy")),
+        labels: displayData.map((entry) => entry.fmtCreatedAt),
         datasets: [
           {
             label: "Weight (lbs)",

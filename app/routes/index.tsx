@@ -1,19 +1,21 @@
 import { type LogEntry } from "@prisma/client";
-import { formatRelative } from "date-fns";
+import { format, formatRelative } from "date-fns";
 import { Link, type LoaderFunction } from "remix";
 import { ClientOnly } from "remix-utils";
 import { CSRChart, SSRChart } from "~/components/wael-chart";
 import { Table } from "~/components/wael-table";
+import { type LogEntryWithFmt } from "~/types";
 import { db } from "~/utils/db.server";
 import { json, useLoaderData } from "~/utils/io";
 import { currentStreak, totalDays } from "~/utils/stats.server";
 
 type LoaderData = {
-  entries: Array<LogEntry>;
+  entries: Array<LogEntryWithFmt>;
   latest?: LogEntry;
-  streak: number;
-  totalDays: number;
-  weight: { high: number | null; low: number | null; avg: number | null };
+  latestRelative?: string;
+  streak: string;
+  totalDays: string;
+  weight: { high: string | null; low: string | null; avg: string | null };
 };
 
 export const loader: LoaderFunction = async () => {
@@ -28,25 +30,24 @@ export const loader: LoaderFunction = async () => {
   const streak = currentStreak(entries, latest);
   const total = totalDays(entries);
 
+  const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1, minimumFractionDigits: 0 });
+
   return json<LoaderData>({
-    entries,
+    entries: entries.map((e) => ({ ...e, fmtCreatedAt: format(e.createdAt, "EEEE MMM do, yyyy") })),
     latest,
-    streak,
-    totalDays: total,
-    weight: { high: extrema._max.weight, low: extrema._min.weight, avg: extrema._avg.weight },
+    latestRelative: latest?.createdAt ? formatRelative(latest.createdAt, new Date()) : "Never",
+    streak: fmt.format(streak),
+    totalDays: fmt.format(total),
+    weight: {
+      high: fmt.format(extrema._max.weight ?? 0),
+      low: fmt.format(extrema._min.weight ?? 0),
+      avg: fmt.format(extrema._avg.weight ?? 0),
+    },
   });
 };
 
 export default function IndexRoute() {
   const data = useLoaderData<LoaderData>();
-
-  const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 0 });
-
-  const fmtStreak = fmt.format(data.streak);
-  const fmtTotalDays = fmt.format(data.totalDays);
-  const fmtWeightMax = fmt.format(data.weight.high ?? 0);
-  const fmtWeightMin = fmt.format(data.weight.low ?? 0);
-  const fmtWeightAvg = fmt.format(data.weight.avg ?? 0);
 
   return (
     <main className="relative flex h-full flex-col overflow-hidden">
@@ -66,35 +67,33 @@ export default function IndexRoute() {
         <dl className="flex flex-col lg:flex-row lg:space-x-6">
           <div className="flex space-x-2">
             <dt className="text-gray-600">Latest:</dt>
-            <dd className="font-bold capitalize text-gray-900">
-              {data.latest ? formatRelative(data.latest.createdAt, new Date()) : "Never"}
-            </dd>
+            <dd className="font-bold capitalize text-gray-900">{data.latestRelative}</dd>
           </div>
           <div className="flex space-x-2">
             <dt className="text-gray-600">Streak:</dt>
-            <dd className="break-words font-bold capitalize text-gray-900">{fmtStreak}</dd>
+            <dd className="break-words font-bold capitalize text-gray-900">{data.streak}</dd>
           </div>
           <div className="flex space-x-2">
             <dt className="text-gray-600">Total Days:</dt>
-            <dd className="break-words font-bold capitalize text-gray-900">{fmtTotalDays}</dd>
+            <dd className="break-words font-bold capitalize text-gray-900">{data.totalDays}</dd>
           </div>
           <div className="flex space-x-4 lg:space-x-6">
             {data.weight.high ? (
               <div className="flex space-x-2">
                 <dt className="text-gray-600">High:</dt>
-                <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightMax}</dd>
+                <dd className="break-words font-bold capitalize text-gray-900">{data.weight.high}</dd>
               </div>
             ) : null}
             {data.weight.low ? (
               <div className="flex space-x-2">
                 <dt className="text-gray-600">Low:</dt>
-                <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightMin}</dd>
+                <dd className="break-words font-bold capitalize text-gray-900">{data.weight.low}</dd>
               </div>
             ) : null}
             {data.weight.avg ? (
               <div className="flex space-x-2">
                 <dt className="text-gray-600">Avg:</dt>
-                <dd className="break-words font-bold capitalize text-gray-900">{fmtWeightAvg}</dd>
+                <dd className="break-words font-bold capitalize text-gray-900">{data.weight.avg}</dd>
               </div>
             ) : null}
           </div>

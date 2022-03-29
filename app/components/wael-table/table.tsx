@@ -1,9 +1,8 @@
-import { type LogEntry } from "@prisma/client";
 import clsx from "clsx";
-import { format } from "date-fns";
+import { type LogEntryWithFmt } from "~/types";
 
 interface TableProps {
-  data: LogEntry[];
+  data: Array<LogEntryWithFmt>;
 }
 
 export const Table = ({ data }: TableProps) => {
@@ -38,8 +37,6 @@ export const Table = ({ data }: TableProps) => {
       </thead>
       <tbody className="bg-white">
         {newestFirst.map((log, idx) => {
-          const formatted = format(log.createdAt, "EEEE MMM do, yyyy");
-
           return (
             <tr key={log.id}>
               <td
@@ -49,7 +46,7 @@ export const Table = ({ data }: TableProps) => {
                   "whitespace-nowrap pl-1 text-sm font-medium"
                 )}
               >
-                <span className="inline-block text-gray-900 lg:inline">{formatted}</span>
+                <span className="inline-block text-gray-900 lg:inline">{log.fmtCreatedAt}</span>
                 <dl className="lg:hidden">
                   <div className="flex space-x-2">
                     <dt>Weight:</dt>
