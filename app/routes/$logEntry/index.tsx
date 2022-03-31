@@ -18,45 +18,31 @@ const badRequest = (data: ActionData) => json(data, { status: 400 });
 export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData();
 
-  const action = formData.get("_action");
+  const weight = parseFloat(`${formData.get("weight")}`);
+  const notes = `${formData.get("notes")}`.trim();
+  const cardio = !!formData.get("cardio");
+  const lift = !!formData.get("lift");
 
-  switch (action) {
-    case "update": {
-      const weight = parseFloat(`${formData.get("weight")}`);
-      const notes = `${formData.get("notes")}`.trim();
-      const cardio = !!formData.get("cardio");
-      const lift = !!formData.get("lift");
-
-      if (Number.isNaN(weight)) {
-        return badRequest({ formError: `Form not submitted correctly.` });
-      }
-
-      const fieldErrors = {
-        weight: validateWeight(weight),
-        notes: validateNotes(notes),
-      };
-
-      const fields = { weight, notes };
-      if (Object.values(fieldErrors).some(Boolean)) {
-        return badRequest({ fieldErrors, fields });
-      }
-
-      await db.logEntry.update({
-        data: { weight: parseFloat(weight.toFixed(1)), cardio, lift, notes },
-        where: { id: params.logEntry },
-      });
-
-      return redirect("/");
-    }
-    case "delete": {
-      await db.logEntry.delete({ where: { id: params.logEntry } });
-
-      return redirect("/");
-    }
-
-    default:
-      return redirect("/");
+  if (Number.isNaN(weight)) {
+    return badRequest({ formError: `Form not submitted correctly.` });
   }
+
+  const fieldErrors = {
+    weight: validateWeight(weight),
+    notes: validateNotes(notes),
+  };
+
+  const fields = { weight, notes };
+  if (Object.values(fieldErrors).some(Boolean)) {
+    return badRequest({ fieldErrors, fields });
+  }
+
+  await db.logEntry.update({
+    data: { weight: parseFloat(weight.toFixed(1)), cardio, lift, notes },
+    where: { id: params.logEntry },
+  });
+
+  return redirect("/");
 };
 
 function validateWeight(weight: number) {
@@ -200,21 +186,17 @@ export default function EditLogRoute() {
               </Link>
               <button
                 type="submit"
-                name="_action"
-                value="update"
                 className="ml-3 inline-flex select-none justify-center rounded-sm border border-transparent bg-gray-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
               >
                 Update
               </button>
             </div>
-            <button
-              type="submit"
-              name="_action"
-              value="delete"
+            <Link
+              to="delete"
               className="inline-flex select-none justify-center rounded-sm border border-transparent py-2 px-4 text-sm font-medium text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               Delete
-            </button>
+            </Link>
           </div>
         </div>
       </Form>
