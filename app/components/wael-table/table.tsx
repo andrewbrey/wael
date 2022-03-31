@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { Link } from "remix";
 import { type LogEntryWithFmt } from "~/types";
 
 interface TableProps {
@@ -46,7 +47,12 @@ export const Table = ({ data }: TableProps) => {
                   "whitespace-nowrap pl-1 text-sm font-medium"
                 )}
               >
-                <span className="inline-block text-gray-900 lg:inline">{log.fmtCreatedAt}</span>
+                <Link
+                  to={log.id}
+                  className="inline-block text-gray-900 outline-none ring-black hover:underline hover:decoration-dotted focus-visible:ring-2 focus-visible:ring-offset-2 lg:inline"
+                >
+                  {log.fmtCreatedAt}
+                </Link>
                 <dl className="lg:hidden">
                   <div className="flex space-x-2">
                     <dt>Weight:</dt>
