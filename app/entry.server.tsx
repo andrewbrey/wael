@@ -1,5 +1,12 @@
-import { renderToString } from "react-dom/server";
+import { Headers, Response } from "@remix-run/node";
+import isbot from "isbot";
+import { PassThrough } from "node:stream";
+// TODO: remove ts-expect-error when @types are updated
+// @ts-expect-error
+import { renderToPipeableStream } from "react-dom/server";
 import { RemixServer, type EntryContext } from "remix";
+
+const ABORT_TIMEOUT = 5000;
 
 export default function handleRequest(
   request: Request,
@@ -7,15 +14,30 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  // TODO: use `renderToReadableStream`? That export doesn't exist in `@types` but
-  // the React 18 upgrade docs recommend it...not sure what's goin on, so just
-  // using `renderToString` which still works, but in a more limited way
-  const markup = renderToString(<RemixServer context={remixContext} url={request.url} />);
+  const callbackName = isbot(request.headers.get("user-agent")) ? "onAllReady" : "onShellReady";
 
-  responseHeaders.set("Content-Type", "text/html");
+  return new Promise((resolve) => {
+    let didError = false;
 
-  return new Response("<!DOCTYPE html>" + markup, {
-    status: responseStatusCode,
-    headers: responseHeaders,
+    const { pipe, abort } = renderToPipeableStream(<RemixServer context={remixContext} url={request.url} />, {
+      [callbackName]() {
+        const body = new PassThrough();
+
+        responseHeaders.set("Content-Type", "text/html");
+
+        resolve(
+          new Response(body, {
+            status: didError ? 500 : responseStatusCode,
+            headers: responseHeaders,
+          })
+        );
+        pipe(body);
+      },
+      onError(error: Error) {
+        didError = true;
+        console.error(error);
+      },
+    });
+    setTimeout(abort, ABORT_TIMEOUT);
   });
 }
