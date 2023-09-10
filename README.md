@@ -31,7 +31,7 @@ This project is licensed under the MIT License - see the [license file](LICENSE)
 
 To build the app locally for development or testing:
 
-1. Install `node` (and `npm`)
-2. `cd` into the project root directory and `npm install`
-3. Run `npm run dev` to build the development version of the app with live file reloading.
-4. Run `npm run build` to build the production version of the app for hosting.
+1. Install `node` (and `yarn`)
+2. `cd` into the project root directory and `yarn install`
+3. Run `yarn run dev` to build the development version of the app with live file reloading.
+4. Run `yarn run build` to build the production version of the app for hosting.
