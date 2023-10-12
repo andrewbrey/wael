@@ -21,7 +21,7 @@ WORKDIR /workspace
 
 COPY --from=deps /workspace/node_modules /workspace/node_modules
 ADD package.json yarn.lock ./
-RUN npm prune --production
+RUN npm prune --production --legacy-peer-deps
 
 # Build the app
 FROM base as build
